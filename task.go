@@ -40,11 +40,12 @@ func RunPanicableTask[T any](f func(args ...any) Result[T], args ...any) Future[
 			if r := recover(); r != nil {
 				err := fmt.Errorf("panic recover: %v", r)
 				ch <- Err[T](err)
+				close(ch)
 			}
 		}()
 
-		defer close(ch)
 		ch <- f(args...)
+		close(ch)
 	}()
 
 	return &future
