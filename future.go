@@ -41,3 +41,15 @@ func JoinAll[T any](futures ...Future[T]) Future[[]T] {
 		return results
 	})
 }
+
+// Await all futures and return it
+func AwaitAll[T any](futures ...Future[T]) []T {
+	results := make([]T, len(futures))
+
+	// 모든 채널이 끝날 때까지 기다립니다.
+	for i, future := range futures {
+		results[i] = future.Await()
+	}
+
+	return results
+}
