@@ -28,10 +28,3 @@ func AwaitAll[T any](futures ...Future[T]) []T {
 
 	return results
 }
-
-
-type Futures []Future[any]
-
-func (f Futures) Await() []any {
-	return AwaitAll(f...)
-}
